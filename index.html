@@ -1,26 +1,50 @@
-<html>
-  <head>
-    
-    <link rel="stylesheet" href="style.css">
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>SITP Simple</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+</head>
+<body>
 
- <title>Mapa Localidad de teusaquillo </title>
-  </head>
-  <body>
-    <n1> Mapa Localidad Teusaquillo<n1>
+    <h1>Explorar Teusaquillo</h1>
 
+    <select id="select-location">
+        <option value="-1">Seleccione una opción</option>
+        <option value="4.6486,-74.0836">Localidad Teusaquillo</option>
+        <option value="sitp">Rutas SITP</option>
+    </select>
 
-        <div><id="mapas" style="width: 100%; height: 100%;"></div>
+    <div id="map" style="height: 500px; width: 100%; margin-top: 10px;"></div>
 
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
-  <section class="menu-inferior">
-    <label for="capa">MENU:</label>
-    <select name="Capas" id="capa">
-          <option value="SU">SELECCIONA UNA</option>
-  
-  <option value="cl">Mapa  localidad</option>
-  <option value="SITP">Paradero sitp</option>
-</section>
-</select>
-<script src="./script.js" ></script>
-  </body>
+    <script>
+        const map = L.map('map').setView([4.639, -74.082], 11);
+        
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+        let rutasLayer;
+
+        document.getElementById("select-location").onchange = function() {
+            const val = this.value;
+            
+            if (val.includes(",")) {
+                const coords = val.split(",").map(Number);
+                map.flyTo(coords, 14);
+            } 
+            else if (val === "sitp") {
+                fetch("Paraderos_Zonales_del_SITP.geojson")
+                    .then(r => r.json())
+                    .then(data => {
+                        if (rutasLayer) map.removeLayer(rutasLayer);
+                        rutasLayer = L.geoJSON(data).addTo(map);
+                        map.fitBounds(rutasLayer.getBounds());
+                    })
+                    .catch(e => console.log("Error con el archivo GeoJSON"));
+            }
+        };
+    </script>
+
+</body>
 </html>

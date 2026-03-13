@@ -1,55 +1,99 @@
-/* Reset básico */
-* { margin: 0; padding: 0; box-sizing: border-box; }
-
+/* --- 1. CONFIGURACIÓN GENERAL --- */
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f4f7f6;
+    margin: 0;
+    padding: 0;
+    /* Usamos una tipografía moderna y limpia */
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background-color: #f8f9fa; /* Fondo gris muy suave para dar contraste */
     color: #333;
     display: flex;
-    justify-content: center;
-    padding: 20px;
+    flex-direction: column;
+    height: 100vh; /* Ocupa todo el alto de la pantalla */
 }
 
-.main-container {
-    width: 100%;
-    max-width: 900px;
+/* --- 2. CABECERA Y BUSCADOR (MENU) --- */
+h1 {
+    text-align: center;
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #1a73e8; /* Un azul 'Google' profesional */
+    margin: 25px 0 15px 0;
+}
+
+/* Contenedor principal para los controles */
+.menu-container {
     background: white;
-    padding: 30px;
-    border-radius: 15px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-}
-
-header h1 {
-    text-align: fixed;
-    color: #2c3e50;
-    margin-bottom: 20px;
-    font-weight: 300;
-}
-
-.controls {
-    background: #ebeff2;
-    padding: 15px;
-    border-radius: 8px;
-    margin-bottom: 20px;
+    padding: 15px 25px;
+    margin: 0 auto 20px auto; /* Centrado y con espacio abajo */
+    border-radius: 50px; /* Estilo 'cápsula' de barra de búsqueda */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Sombra suave para dar profundidad */
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 15px;
+    width: fit-content; /* Se ajusta al contenido */
 }
 
-label { font-weight: bold; font-size: 0.9rem; }
+/* Estilo para la etiqueta 'label' si la tienes */
+.menu-container label {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #5f6368;
+}
 
+/* --- 3. EL SELECTOR (DROPDOWN) --- */
 select {
-    padding: 8px 12px;
-    border-radius: 5px;
-    border: 1px solid #cbd5e0;
-    background: white;
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 25px; /* Bordes suaves */
+    outline: none; /* Quita el borde azul por defecto */
+    font-size: 1rem;
     cursor: pointer;
-    outline: none;
+    transition: all 0.3s ease; /* Animación suave al pasar el ratón */
+    background-color: #fff;
+    color: #333;
 }
 
-#mapas {
-    width: 100%;
-    height: 500px; /* Altura fija para que no desaparezca */
-    border-radius: 10px;
-    border: 2px solid #e2e8f0;
+/* Efecto al pasar el ratón y al seleccionar */
+select:hover {
+    border-color: #1a73e8;
+    box-shadow: 0 0 5px rgba(26, 115, 232, 0.2);
+}
+
+select:focus {
+    border-color: #1a73e8;
+    background-color: #fff;
+}
+
+/* --- 4. CONTENEDOR DEL MAPA --- */
+#map {
+    flex-grow: 1; /* El mapa ocupa todo el espacio que sobra */
+    width: 95%; /* Un poco menos de ancho que la pantalla */
+    margin: 0 auto 20px auto; /* Centrado y con margen abajo */
+    border-radius: 15px; /* Bordes redondeados para el mapa */
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15); /* Sombra más fuerte para el mapa */
+    border: 4px solid white; /* Un 'marco' blanco para integrarlo mejor */
+}
+
+/* --- 5. PERSONALIZACIÓN DE ELEMENTOS DE LEAFLET --- */
+/* Hacer los botones de zoom (+/-) más bonitos */
+.leaflet-control-zoom {
+    border-radius: 8px !important;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1) !important;
+    border: none !important;
+}
+
+.leaflet-control-zoom a {
+    color: #1a73e8 !important;
+    font-size: 1.2rem !important;
+}
+
+/* Estilo moderno para los Popups (los globos de texto) */
+.leaflet-popup-content-wrapper {
+    border-radius: 8px;
+    padding: 5px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.leaflet-popup-tip {
+    background: white;
 }

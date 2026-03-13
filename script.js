@@ -1,23 +1,29 @@
-// Coordenadas aproximadas de Teusaquillo, Bogotá
-const lat = 4.6433;
-const lon = -74.0886;
+const map = L.map("map").setView([4.6486, -74.0836], 11);
 
-// Inicializar el mapa
-var map = L.map('mapas').setView([lat, lon], 14);
+L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(map);
 
-// Añadir el diseño del mapa (OpenStreetMap)
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '© OpenStreetMap contributors'
-}).addTo(map);
+let rutasLayer;
 
-// Ejemplo: Añadir un marcador (Paradero)
-const paradero = L.marker([4.645, -74.085]).bindPopup("Paradero SITP Ejemplo");
+document.getElementById("select-location").onchange = function() {
+    const val = this.value;
+    if (val === "-1") return;
 
-// Escuchar cambios en el SELECT
-document.getElementById('capa').addEventListener('change', function(e) {
-    if (e.target.value === "SITP") {
-        paradero.addTo(map);
-    } else {
-        map.removeLayer(paradero);
+    // Si es coordenada (ej. Teusaquillo)
+    if (val.includes(",")) {
+        const coords = val.split(",").map(Number);
+        map.flyTo(coords, 14);
+        L.marker(coords).addTo(map).bindPopup("Ubicación seleccionada").openPopup();
     }
-});
+
+    // Si es SITP
+    if (val === "sitp") {
+        fetch("paradero_zonal.geojson")
+            .then(res => res.json())
+            .then(data => {
+                if (rutasLayer) map.removeLayer(rutasLayer);
+                rutasLayer = L.geoJSON(data, { style: { color: "blue", weight: 2 } }).addTo(map);
+                map.fitBounds(rutasLayer.getBounds());
+            })
+            .catch(err => console.error("Error:", err));
+    }
+};
